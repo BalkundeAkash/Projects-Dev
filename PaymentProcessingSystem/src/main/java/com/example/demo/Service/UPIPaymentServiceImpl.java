@@ -1,11 +1,11 @@
 package com.example.demo.Service;
 
-public class UPIPaymentServiceImpl implements PaymentService {
+public class UPIPaymentServiceImpl implements PaymentService{
 
 	@Override
-	public String paymentProcess(double amount) {
+	public String processPayment(double amount) {
 		// TODO Auto-generated method stub
-		return "UPI Payment of :" + amount + "Processed Successful";
+		return "UPI payment of :" + amount + "processed successfully";
 	}
 
 }
