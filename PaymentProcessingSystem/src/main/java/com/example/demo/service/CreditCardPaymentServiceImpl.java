@@ -1,11 +1,12 @@
-package com.example.demo.service;
+package com.example.demo.Service;
 
-public class CreditCardPaymentServiceImpl implements PaymentService {
+public class CreditCardPaymentServiceImpl implements PaymentService{
 
 	@Override
-	public String paymentProcess(double amount) {
+	public String processPayment(double amount) {
 		// TODO Auto-generated method stub
-		return "Credit card payment of : " + amount + "processed successfully" ;
+		return "Credit Card Payment of :"+amount + "processed successfully";
 	}
 
+	
 }
