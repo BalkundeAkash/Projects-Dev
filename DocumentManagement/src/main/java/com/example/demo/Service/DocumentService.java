@@ -7,5 +7,7 @@ public interface DocumentService {
 	void processData();
 	
 	String printData();
+	
+	String collectData();
 
 }
