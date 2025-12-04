@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Portal - Home</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      overflow-x: hidden;
+    }
+
+    .background-shape {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shape1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(102, 126, 234, 0.4);
+      top: -150px;
+      left: -150px;
+    }
+
+    .shape2 {
+      width: 400px;
+      height: 400px;
+      background: rgba(240, 147, 251, 0.4);
+      bottom: -100px;
+      right: -100px;
+    }
+
+    .shape3 {
+      width: 350px;
+      height: 350px;
+      background: rgba(118, 75, 162, 0.3);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Homepage Styles */
+    .homepage {
+      position: relative;
+      z-index: 1;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: opacity 0.3s ease;
+    }
+
+    .homepage.hidden {
+      display: none;
+    }
+
+    .navbar {
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-title {
+      font-size: 56px;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 48px;
+      max-width: 700px;
+      line-height: 1.6;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .cta-button {
+      padding: 20px 48px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: none;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(16, 185, 129, 0.6), 0 0 40px rgba(52, 211, 153, 0.5);
+    }
+
+    .cta-button:hover::before {
+      left: 100%;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 80px;
+      padding: 0 24px;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 36px 28px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .feature-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .feature-description {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.6;
+    }
+
+    /* Payment Portal Styles */
+    .payment-portal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .payment-portal.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .payment-container {
+      position: relative;
+      width: 90%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 48px 40px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      animation: slideUp 0.4s ease;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .close-button:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: rotate(90deg);
+    }
+
+    .portal-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .portal-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    }
+
+    .portal-icon svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .portal-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 8px;
+    }
+
+    .portal-subtitle {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 400;
+    }
+
+    .form-group {
+      margin-bottom: 28px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 10px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-select,
+    .form-input {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      font-size: 16px;
+      color: #ffffff;
+      outline: none;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 20px center;
+      cursor: pointer;
+    }
+
+    .form-select option {
+      background: #764ba2;
+      color: #ffffff;
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .form-select:focus,
+    .form-input:focus {
+      border-color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .payment-button {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+      margin-top: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .payment-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .payment-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(16, 185, 129, 0.6), 0 0 40px rgba(52, 211, 153, 0.5);
+    }
+
+    .payment-button:hover::before {
+      left: 100%;
+    }
+
+    .payment-button:active {
+      transform: translateY(0);
+    }
+
+    .message-container {
+      margin-top: 28px;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      display: none;
+      animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message-container.success {
+      background: rgba(52, 211, 153, 0.2);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      color: #ffffff;
+      display: block;
+    }
+
+    .message-container.error {
+      background: rgba(248, 113, 113, 0.2);
+      border: 1px solid rgba(248, 113, 113, 0.4);
+      color: #ffffff;
+      display: block;
+    }
+
+    .currency-symbol {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+    }
+
+    .amount-wrapper {
+      position: relative;
+    }
+
+    .amount-wrapper .form-input {
+      padding-left: 45px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 40px;
+      }
+
+      .hero-subtitle {
+        font-size: 18px;
+      }
+
+      .navbar {
+        padding: 20px 24px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="background-shape shape1"></div>
+  <div class="background-shape shape2"></div>
+  <div class="background-shape shape3"></div><!-- Homepage -->
+  <div class="homepage" id="homepage">
+   <nav class="navbar">
+    <div class="logo">
+     <div class="logo-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect> <line x1="1" y1="10" x2="23" y2="10"></line>
+      </svg>
+     </div><span class="logo-text">PayPortal</span>
+    </div>
+   </nav>
+   <main class="hero-section">
+    <h1 class="hero-title" id="hero-title">Secure Payment Solutions</h1>
+    <p class="hero-subtitle" id="hero-subtitle">Fast, secure, and reliable payment processing for your business. Accept payments seamlessly with our advanced payment portal.</p><button class="cta-button" id="cta-button">Access Payment Portal</button>
+    <div class="features-grid">
+     <div class="feature-card">
+      <div class="feature-icon">
+       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+       </svg>
+      </div>
+      <h3 class="feature-title" id="feature-1-title">Secure Transactions</h3>
+      <p class="feature-description">Bank-level encryption and security protocols to protect your payment data at all times.</p>
+     </div>
+     <div class="feature-card">
+      <div class="feature-icon">
+       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect> <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+       </svg>
+      </div>
+      <h3 class="feature-title" id="feature-2-title">Multiple Payment Methods</h3>
+      <p class="feature-description">Support for Credit Cards, UPI, Net Banking, and more payment options for your convenience.</p>
+     </div>
+     <div class="feature-card">
+      <div class="feature-icon">
+       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+       </svg>
+      </div>
+      <h3 class="feature-title" id="feature-3-title">Instant Processing</h3>
+      <p class="feature-description">Lightning-fast payment processing with real-time confirmation and instant receipts.</p>
+     </div>
+    </div>
+   </main>
+  </div><!-- Payment Portal Modal -->
+  <div class="payment-portal" id="payment-portal">
+   <div class="payment-container">
+    <div class="close-button" id="close-button">
+     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line> <line x1="6" y1="6" x2="18" y2="18"></line>
+     </svg>
+    </div>
+    <div class="portal-header">
+     <div class="portal-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect> <line x1="1" y1="10" x2="23" y2="10"></line>
+      </svg>
+     </div>
+     <h2 class="portal-title" id="portal-title">Payment Portal</h2>
+     <p class="portal-subtitle">Secure &amp; Fast Transactions</p>
+    </div>
+    <form id="payment-form">
+     <div class="form-group"><label for="payment-mode" class="form-label">Payment Mode</label> <select id="payment-mode" class="form-select" required> <option value="">Select payment method</option> <option value="credit-card">Credit Card</option> <option value="upi">UPI</option> <option value="net-banking">Net Banking</option> </select>
+     </div>
+     <div class="form-group"><label for="amount" class="form-label">Amount</label>
+      <div class="amount-wrapper"><span class="currency-symbol">₹</span> <input type="number" id="amount" class="form-input" placeholder="0.00" min="1" step="0.01" required>
+      </div>
+     </div><button type="submit" class="payment-button" id="payment-button"> Make Payment </button>
+    </form>
+    <div id="message-container" class="message-container"></div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      hero_title: 'Secure Payment Solutions',
+      hero_subtitle: 'Fast, secure, and reliable payment processing for your business. Accept payments seamlessly with our advanced payment portal.',
+      cta_button: 'Access Payment Portal',
+      feature_1_title: 'Secure Transactions',
+      feature_2_title: 'Multiple Payment Methods',
+      feature_3_title: 'Instant Processing',
+      portal_title: 'Payment Portal',
+      button_text: 'Make Payment',
+      success_message: 'Payment processed successfully!',
+      background_color: '#667eea',
+      card_surface_color: 'rgba(255, 255, 255, 0.1)',
+      text_color: '#ffffff',
+      primary_action_color: '#10b981',
+      secondary_action_color: '#764ba2',
+      font_family: 'Inter',
+      font_size: 16
+    };
+
+    async function onConfigChange(config) {
+      const heroTitle = document.getElementById('hero-title');
+      const heroSubtitle = document.getElementById('hero-subtitle');
+      const ctaButton = document.getElementById('cta-button');
+      const feature1Title = document.getElementById('feature-1-title');
+      const feature2Title = document.getElementById('feature-2-title');
+      const feature3Title = document.getElementById('feature-3-title');
+      const portalTitle = document.getElementById('portal-title');
+      const paymentButton = document.getElementById('payment-button');
+      
+      heroTitle.textContent = config.hero_title || defaultConfig.hero_title;
+      heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+      ctaButton.textContent = config.cta_button || defaultConfig.cta_button;
+      feature1Title.textContent = config.feature_1_title || defaultConfig.feature_1_title;
+      feature2Title.textContent = config.feature_2_title || defaultConfig.feature_2_title;
+      feature3Title.textContent = config.feature_3_title || defaultConfig.feature_3_title;
+      portalTitle.textContent = config.portal_title || defaultConfig.portal_title;
+      paymentButton.textContent = config.button_text || defaultConfig.button_text;
+
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+
+      const baseSize = config.font_size || defaultConfig.font_size;
+      document.querySelector('.hero-title').style.fontSize = `${baseSize * 3.5}px`;
+      document.querySelector('.hero-subtitle').style.fontSize = `${baseSize * 1.25}px`;
+      document.querySelector('.cta-button').style.fontSize = `${baseSize * 1.125}px`;
+      document.querySelectorAll('.feature-title').forEach(el => el.style.fontSize = `${baseSize * 1.375}px`);
+      document.querySelectorAll('.feature-description').forEach(el => el.style.fontSize = `${baseSize * 0.9375}px`);
+      document.querySelector('.portal-title').style.fontSize = `${baseSize * 2}px`;
+      document.querySelector('.portal-subtitle').style.fontSize = `${baseSize * 0.875}px`;
+      document.querySelectorAll('.form-label').forEach(el => el.style.fontSize = `${baseSize * 0.875}px`);
+      document.querySelectorAll('.form-select, .form-input').forEach(el => el.style.fontSize = `${baseSize}px`);
+      document.querySelector('.payment-button').style.fontSize = `${baseSize * 1.125}px`;
+
+      const bgColor = config.background_color || defaultConfig.background_color;
+      document.body.style.background = `linear-gradient(135deg, ${bgColor} 0%, #764ba2 50%, #f093fb 100%)`;
+
+      const cardSurface = config.card_surface_color || defaultConfig.card_surface_color;
+      document.querySelector('.payment-container').style.background = cardSurface;
+      document.querySelectorAll('.feature-card').forEach(el => el.style.background = cardSurface);
+
+      const textColor = config.text_color || defaultConfig.text_color;
+      document.querySelectorAll('.hero-title, .hero-subtitle, .feature-title, .feature-description, .portal-title, .portal-subtitle, .form-label, .form-select, .form-input, .payment-button, .logo-text').forEach(el => {
+        el.style.color = textColor;
+      });
+
+      const primaryAction = config.primary_action_color || defaultConfig.primary_action_color;
+      document.querySelector('.cta-button').style.background = `linear-gradient(135deg, ${primaryAction}, #059669)`;
+      document.querySelector('.payment-button').style.background = `linear-gradient(135deg, ${primaryAction}, #059669)`;
+
+      const secondaryAction = config.secondary_action_color || defaultConfig.secondary_action_color;
+      document.querySelector('.portal-icon').style.background = `linear-gradient(135deg, #667eea, ${secondaryAction})`;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.card_surface_color || defaultConfig.card_surface_color,
+            set: (value) => {
+              config.card_surface_color = value;
+              window.elementSdk.setConfig({ card_surface_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.primary_action_color || defaultConfig.primary_action_color,
+            set: (value) => {
+              config.primary_action_color = value;
+              window.elementSdk.setConfig({ primary_action_color: value });
+            }
+          },
+          {
+            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+            set: (value) => {
+              config.secondary_action_color = value;
+              window.elementSdk.setConfig({ secondary_action_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            config.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            config.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['hero_title', config.hero_title || defaultConfig.hero_title],
+        ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+        ['cta_button', config.cta_button || defaultConfig.cta_button],
+        ['feature_1_title', config.feature_1_title || defaultConfig.feature_1_title],
+        ['feature_2_title', config.feature_2_title || defaultConfig.feature_2_title],
+        ['feature_3_title', config.feature_3_title || defaultConfig.feature_3_title],
+        ['portal_title', config.portal_title || defaultConfig.portal_title],
+        ['button_text', config.button_text || defaultConfig.button_text],
+        ['success_message', config.success_message || defaultConfig.success_message]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    // Modal functionality
+    const ctaBtn = document.getElementById('cta-button');
+    const paymentPortal = document.getElementById('payment-portal');
+    const closeBtn = document.getElementById('close-button');
+    const paymentForm = document.getElementById('payment-form');
+    const messageContainer = document.getElementById('message-container');
+
+    ctaBtn.addEventListener('click', () => {
+      paymentPortal.classList.add('active');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      paymentPortal.classList.remove('active');
+      paymentForm.reset();
+      hideMessage();
+    });
+
+    paymentPortal.addEventListener('click', (e) => {
+      if (e.target === paymentPortal) {
+        paymentPortal.classList.remove('active');
+        paymentForm.reset();
+        hideMessage();
+      }
+    });
+
+    paymentForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const paymentMode = document.getElementById('payment-mode').value;
+      const amount = document.getElementById('amount').value;
+
+      if (!paymentMode || !amount || parseFloat(amount) <= 0) {
+        showMessage('Please fill in all fields correctly', 'error');
+        return;
+      }
+
+      const successMsg = window.elementSdk?.config?.success_message || defaultConfig.success_message;
+      showMessage(successMsg, 'success');
+      
+      setTimeout(() => {
+        paymentForm.reset();
+        hideMessage();
+      }, 5000);
+    });
+
+    function showMessage(text, type) {
+      messageContainer.textContent = text;
+      messageContainer.className = `message-container ${type}`;
+    }
+
+    function hideMessage() {
+      messageContainer.className = 'message-container';
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a884731b36ef487',t:'MTc2NDgxOTU4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

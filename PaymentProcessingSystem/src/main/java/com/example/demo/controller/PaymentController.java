@@ -63,7 +63,7 @@ public class PaymentController {
  * ✔ @RequestParam amount
  * 
  * This means the amount should be passed as a query parameter:
- * 
+ * ?amount=200
  * ?amount=500
  * 
  * ?amount=1000
