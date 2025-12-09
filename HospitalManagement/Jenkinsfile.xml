@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'github-pat',
+                    url: 'https://github.com/BalkundeAkash/Projects-Dev.git',
+                    branch: 'jenkins-curd-app'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Building CURD App..."
+                // Add build commands here
+            }
+        }
+    }
+}
