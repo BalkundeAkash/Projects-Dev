@@ -1,20 +1,37 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven3'   // Make sure you configure Maven in Jenkins → Global Tool Configuration
+        jdk 'JDK17'      // Configure JDK 17
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                git credentialsId: 'github-pat',
-                    url: 'https://github.com/BalkundeAkash/Projects-Dev.git',
-                    branch: 'jenkins-curd-app'
+                git branch: 'jenkins-curd-app',
+                    credentialsId: 'github-pat',
+                    url: 'https://github.com/BalkundeAkash/Projects-Dev.git'
             }
         }
 
-        stage('Build') {
+        stage('Build Project') {
             steps {
-                echo "Building CURD App..."
-                // Add build commands here
+                sh 'mvn clean package -DskipTests'
             }
+        }
+
+        stage('Run Application') {
+            steps {
+                sh 'nohup java -jar target/*.jar &'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Your Spring Boot App is running!"
+            echo "Open URL → http://localhost:8080/"
         }
     }
 }
