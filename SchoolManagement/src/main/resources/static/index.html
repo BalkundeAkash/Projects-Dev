@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Teacher Management System</title>
+
+	<style>
+		body {
+			margin: 0;
+			font-family: 'Poppins', sans-serif;
+			background: #f4f6fb;
+		}
+
+		.page {
+			display: none;
+		}
+
+		.active {
+			display: block;
+		}
+
+		.home-container {
+			text-align: center;
+			padding-top: 150px;
+		}
+
+		.title {
+			font-size: 35px;
+			margin-bottom: 30px;
+			color: #333;
+		}
+
+		.primary-btn,
+		.secondary-btn,
+		.danger-btn {
+			padding: 12px 20px;
+			border: none;
+			border-radius: 8px;
+			font-size: 16px;
+			cursor: pointer;
+			color: white;
+		}
+
+		.primary-btn {
+			background: #4A90E2;
+		}
+
+		.secondary-btn {
+			background: #7B8D93;
+		}
+
+		.danger-btn {
+			background: #D9534F;
+		}
+
+		.page-title {
+			text-align: center;
+			padding: 20px;
+			font-size: 32px;
+			color: #222;
+		}
+
+		.container {
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 25px;
+			padding: 20px;
+		}
+
+		.card {
+			background: white;
+			width: 350px;
+			padding: 25px;
+			border-radius: 12px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		}
+
+		.card h2 {
+			margin-bottom: 20px;
+		}
+
+		input {
+			width: 100%;
+			padding: 12px;
+			margin: 8px 0;
+			border-radius: 8px;
+			border: 1px solid #ccc;
+			font-size: 15px;
+		}
+
+		.output-box {
+			background: #eef3ff;
+			padding: 15px;
+			border-radius: 8px;
+			font-size: 14px;
+			margin-top: 10px;
+			white-space: pre-wrap;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<!-- ===================== HOME PAGE ===================== -->
+	<div id="homePage" class="page active">
+
+		<div class="home-container">
+			<h1 class="title">Welcome to School Management System</h1>
+
+			<button class="primary-btn" onclick="openTeacherPage()">
+				Go to Teacher Management
+			</button>
+		</div>
+
+	</div>
+
+	<!-- ===================== TEACHER PAGE ===================== -->
+	<div id="teacherPage" class="page">
+
+		<h1 class="page-title">Teacher Management System</h1>
+
+		<button class="secondary-btn" style="margin-left: 20px;" onclick="goHome()">⬅ Back to Home</button>
+
+		<div class="container">
+
+			<!-- Add Teacher -->
+			<div class="card">
+				<h2>Add Teacher</h2>
+
+				<input id="id" type="number" placeholder="Teacher ID (int)">
+				<input id="name" type="text" placeholder="Teacher Name">
+				<input id="address" type="text" placeholder="Address">
+				<input id="subject" type="text" placeholder="Subject">
+
+				<button class="primary-btn" onclick="addTeacher()">Add Teacher</button>
+			</div>
+
+			<!-- Get Teacher -->
+			<div class="card">
+				<h2>Get Teacher</h2>
+
+				<input id="searchId" type="number" placeholder="Enter Teacher ID">
+				<button class="secondary-btn" onclick="getTeacher()">Search</button>
+
+				<pre id="teacherOutput" class="output-box"></pre>
+			</div>
+
+			<!-- Delete Teacher -->
+			<div class="card">
+				<h2>Delete Teacher</h2>
+
+				<input id="deleteId" type="number" placeholder="Enter Teacher ID">
+				<button class="danger-btn" onclick="deleteTeacher()">Delete</button>
+			</div>
+
+		</div>
+	</div>
+
+	<script>
+
+		const BASE_URL = "http://localhost:8080/teacher";
+
+		/* ----------- PAGE NAVIGATION ----------- */
+
+		function openTeacherPage() {
+			document.getElementById("homePage").classList.remove("active");
+			document.getElementById("teacherPage").classList.add("active");
+		}
+
+		function goHome() {
+			document.getElementById("teacherPage").classList.remove("active");
+			document.getElementById("homePage").classList.add("active");
+		}
+
+		/* ----------- API CALLS ----------- */
+
+		// Add Teacher
+		function addTeacher() {
+			let teacher = {
+				id: document.getElementById("id").value,
+				name: document.getElementById("name").value,
+				address: document.getElementById("address").value,
+				subject: document.getElementById("subject").value
+			};
+
+			fetch(`${BASE_URL}/add`, {
+				method: "POST",
+				headers: {"Content-Type": "application/json"},
+				body: JSON.stringify(teacher)
+			})
+				.then(res => res.text())
+				.then(data => alert(data));
+		}
+
+		// Get Teacher
+		function getTeacher() {
+			let id = document.getElementById("searchId").value;
+
+			fetch(`${BASE_URL}/${id}`)
+				.then(res => res.json())
+				.then(data => {
+					document.getElementById("teacherOutput").innerText =
+						JSON.stringify(data, null, 2);
+				});
+		}
+
+		// Delete Teacher
+		function deleteTeacher() {
+			let id = document.getElementById("deleteId").value;
+
+			fetch(`${BASE_URL}/${id}`, {method: "DELETE"})
+				.then(res => res.text())
+				.then(data => alert(data));
+		}
+
+	</script>
+
+</body>
+
+</html>
